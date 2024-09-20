@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruffle Video & Game Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .input-container {
+            margin: 20px;
+        }
+
+        input[type="url"] {
+            padding: 10px;
+            width: 60%;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .player-container {
+            margin-top: 20px;
+        }
+
+        #playerArea {
+            width: 640px;
+            height: 480px;
+            border: 1px solid #ccc;
+            margin: 0 auto;
+            background-color: #000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video/Game Player with Ruffle</h1>
+    <div class="input-container">
+        <form id="mediaForm">
+            <label for="urlInput">Enter Video (.mp4) or Game (.swf) URL:</label>
+            <input type="url" id="urlInput" placeholder="Enter media URL here..." required>
+            <button type="submit">Play</button>
+        </form>
+    </div>
+
+    <div class="player-container">
+        <h2>Player</h2>
+        <div id="playerArea">
+            <!-- Ruffle will load the content here -->
+        </div>
+    </div>
+
+    <!-- Include the Ruffle library -->
+    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+
+    <script>
+        document.getElementById('mediaForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const url = document.getElementById('urlInput').value;
+            const playerArea = document.getElementById('playerArea');
+
+            if (url.endsWith('.swf')) {
+                // Handle .swf files with Ruffle
+                playerArea.innerHTML = `
+                    <embed
+                        src="${url}"
+                        width="640" 
+                        height="480" 
+                        type="application/x-shockwave-flash">
+                `;
+            } else if (url.endsWith('.mp4')) {
+                // Handle .mp4 video files
+                playerArea.innerHTML = `
+                    <video width="640" height="480" controls>
+                        <source src="${url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                `;
+            } else {
+                alert('Unsupported file type! Please use a .mp4 or .swf link.');
+            }
+        });
+    </script>
+</body>
+</html>
